@@ -81,9 +81,11 @@ function buy(id) {
   const producto = products.find((element) => element.id == id);
   if (cart.includes(producto)) {
     producto.cantidad += 1;
+    calculateTotal();
   } else {
     producto.cantidad = 1;
     cart.push(producto);
+    calculateTotal();
   }
 
   console.log(cart);
@@ -92,14 +94,28 @@ function buy(id) {
 // Exercise 2
 function cleanCart() {
   cart.splice(0);
+  calculateTotal();
   console.log(cart);
 }
 
 // Exercise 3
 function calculateTotal() {
   // Calculate total price of the cart using the "cartList" array
+  let total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    total += cart[i].price * cart[i].cantidad;
+  }
 
+  console.log(total);
 }
+/*// Exercise 3 (con reduce)
+function calculateTotal() {
+  // Calculate total price of the cart using the "cartList" array
+  total = cart.reduce((acc, item) => {
+    return acc + item.price * item.cantidad;
+  }, 0);
+  console.log(total);
+}*/
 
 // Exercise 4
 function applyPromotionsCart() {
