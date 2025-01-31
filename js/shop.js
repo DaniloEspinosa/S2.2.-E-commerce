@@ -79,22 +79,35 @@ function buy(id) {
   // 1. Loop for to the array products to get the item to add to cart
   // 2. Add found product to the cart array
   const producto = products.find((element) => element.id == id);
+
   if (cart.includes(producto)) {
     producto.cantidad += 1;
-    calculateTotal();
+    if (
+      producto.offer &&
+      producto.cantidad &&
+      producto.offer.number <= producto.cantidad
+    ) {
+      producto.total = applyPromotionsCart(producto);
+    } else {
+      producto.total = producto.cantidad * producto.price;
+    }
   } else {
     producto.cantidad = 1;
+    producto.total = producto.cantidad * producto.price;
     cart.push(producto);
-    calculateTotal();
   }
 
+  countProducts();
+  calculateTotal();
   console.log(cart);
 }
 
 // Exercise 2
 function cleanCart() {
   cart.splice(0);
+  countProducts();
   calculateTotal();
+
   console.log(cart);
 }
 
@@ -103,8 +116,11 @@ function calculateTotal() {
   // Calculate total price of the cart using the "cartList" array
   let total = 0;
   for (let i = 0; i < cart.length; i++) {
-    total += cart[i].price * cart[i].cantidad;
+    total += cart[i].total;
   }
+
+  let total_price = document.getElementById("total_price");
+  total_price.innerHTML = total.toFixed(2);
 
   console.log(total);
 }
@@ -118,8 +134,9 @@ function calculateTotal() {
 }*/
 
 // Exercise 4
-function applyPromotionsCart() {
+function applyPromotionsCart(item) {
   // Apply promotions to each item in the array "cart"
+  return (item.price - (item.price * item.offer.percent) / 100) * item.cantidad;
 }
 
 // Exercise 5
@@ -134,4 +151,14 @@ function removeFromCart(id) {}
 
 function open_modal() {
   printCart();
+}
+
+// BONUS Implementacion para modificar la cantidad de productos en el carrito
+function countProducts() {
+  let cantidadProductos = 0;
+  for (let i = 0; i < cart.length; i++) {
+    cantidadProductos += cart[i].cantidad;
+  }
+  const count_product = document.getElementById("count_product");
+  count_product.innerHTML = cantidadProductos;
 }
