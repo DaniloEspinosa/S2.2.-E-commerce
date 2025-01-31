@@ -166,7 +166,35 @@ function printCart() {
 // ** Nivell II **
 
 // Exercise 7
-function removeFromCart(id) {}
+function removeFromCart(id) {
+  const producto = products.find((element) => element.id == id);
+
+  if (!cart.includes(producto)){
+    alert(`No hay "${producto.name}" en el carrito`)
+    return
+  }
+
+  if (cart.includes(producto) && producto.cantidad >= 1) {
+    producto.cantidad -= 1;
+    if (
+      producto.offer &&
+      producto.cantidad &&
+      producto.offer.number <= producto.cantidad
+    ) {
+      producto.total = applyPromotionsCart(producto);
+    } else {
+      producto.total = Number((producto.cantidad * producto.price).toFixed(2));
+    }
+  }
+  if (cart.includes(producto) && producto.cantidad <= 0) {
+    cart = cart.filter((item) => item != producto);
+  }
+
+
+  countProducts();
+  calculateTotal();
+  console.log(cart);
+}
 
 function open_modal() {
   printCart();
