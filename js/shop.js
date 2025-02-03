@@ -99,7 +99,7 @@ function buy(id) {
 
   countProducts();
   calculateTotal();
-  console.log(cart);
+  countProduct(id);
 }
 
 // Exercise 2
@@ -108,8 +108,6 @@ function cleanCart() {
   printCart();
   countProducts();
   calculateTotal();
-
-  console.log(cart);
 }
 
 // Exercise 3
@@ -122,17 +120,7 @@ function calculateTotal() {
 
   let total_price = document.getElementById("total_price");
   total_price.innerHTML = total.toFixed(2);
-
-  console.log(total);
 }
-/*// Exercise 3 (con reduce)
-function calculateTotal() {
-  // Calculate total price of the cart using the "cartList" array
-  total = cart.reduce((acc, item) => {
-    return acc + item.price * item.cantidad;
-  }, 0);
-  console.log(total);
-}*/
 
 // Exercise 4
 function applyPromotionsCart(item) {
@@ -153,7 +141,7 @@ function printCart() {
   cart.forEach((item) => {
     cartHtml += `<tr>
 					<th scope="row">${item.name}</th>
-					<td>$${item.price}</td>
+					<td>$${item.price} un</td>
 					<td>${item.cantidad}</td>
 					<td>${item.total.toFixed(2)}</td>
 				</tr>`;
@@ -169,9 +157,9 @@ function printCart() {
 function removeFromCart(id) {
   const producto = products.find((element) => element.id == id);
 
-  if (!cart.includes(producto)){
-    alert(`No hay "${producto.name}" en el carrito`)
-    return
+  if (!cart.includes(producto)) {
+    alert(`No hay "${producto.name}" en el carrito`);
+    return;
   }
 
   if (cart.includes(producto) && producto.cantidad >= 1) {
@@ -190,10 +178,9 @@ function removeFromCart(id) {
     cart = cart.filter((item) => item != producto);
   }
 
-
   countProducts();
   calculateTotal();
-  console.log(cart);
+  countProduct(id);
 }
 
 function open_modal() {
@@ -208,4 +195,16 @@ function countProducts() {
   }
   const count_product = document.getElementById("count_product");
   count_product.innerHTML = cantidadProductos;
+}
+
+function countProduct(id) {
+  const count_product = document.getElementById(`count_product_${id}`);
+
+  let cantidad = 0;
+  cart.forEach((item) => {
+    if (item.id === id) {
+      cantidad = item.cantidad;
+    }
+  });
+  count_product.innerHTML = cantidad;
 }
