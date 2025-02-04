@@ -108,6 +108,7 @@ function cleanCart() {
   printCart();
   countProducts();
   calculateTotal();
+  resetProduct();
 }
 
 // Exercise 3
@@ -207,4 +208,11 @@ function countProduct(id) {
     }
   });
   count_product.innerHTML = cantidad;
+}
+
+function resetProduct() {
+  products.forEach((item) => {
+    const count_product = document.getElementById(`count_product_${item.id}`);
+    count_product.innerHTML = 0;
+  });
 }
